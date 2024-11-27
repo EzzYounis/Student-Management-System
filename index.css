@@ -1,0 +1,222 @@
+*{
+    margin: 0px;
+    
+}
+body{
+   background-color: #FAF9F6;
+}
+header{
+    display: flex;
+    flex-direction: column;
+    font-size: 2rem;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    margin: auto 0;
+
+}
+.sidebar-opened{
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    width: 25vw;
+    border: 2px solid black;
+    height: 100vh;
+    background-color:white;
+    margin: 1%;
+}
+.hidden{
+    display: none;
+}
+.sidebar-hidden{
+    
+    display: none;
+}
+.menu-button img{
+    width: 100%;
+    
+    
+}
+.menu-button{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 6vw;
+   margin: 5px;
+}
+#nav-top{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2%;
+    font-size: 2rem;
+
+}
+#Dashboard-arrow{
+    width: 25px;
+}
+
+
+#Dashboard-logo  {
+width: 40px;
+}
+ul {
+    list-style-type: none;
+}
+.Outter-options{
+    color: black;
+    font-weight: bold;
+    font-size: 2rem;
+    margin-right: 10%;
+    padding: 5px;
+   
+}
+.Outter-options a {
+    text-decoration: none;
+    color: black;
+}
+.Inner-options{
+    color: black;
+    text-decoration: none;
+    font-size: 1rem;
+}
+.Outter-options:hover{
+    background-color: gray;
+    border-radius: 4px;
+}
+.Inner-options:hover{
+    color: white;
+
+}
+/* ==================Course List========================== */
+.Course-list{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.Course-list ul,.Student-list-box{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #ddd;
+    width: 80vw;
+    
+    font-size: 2rem;
+    background-color: #f0f8ff;
+    padding:15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+
+}
+
+
+.Course-box ,.Student-box{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f9f9f9;
+    width: 90%;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+.Course-box div{
+    width: 100%;
+}
+.Course-box span{
+    margin: 0 5px;
+}
+.Course-box:hover ,.Student-box:hover {
+    background-color: #f1f1f1;
+}
+.Edit-btn,.Delete-btn,.savebtn,#add-course-btn,#add-student-btn{
+    color: white;
+    padding: 5px 10px;
+    background-color: #2196F3;
+    border-radius: 3px;
+    border: none;
+    width: 8%;
+    height: 3vw;
+    transition: background-color 0.3s ease;
+    float: right;
+    margin: 2px;
+    
+}
+.Delete-btn:hover,.Edit-btn:hover,.savebtn:hover,#add-student-btn:hover,#add-course-btn:hover{
+    background-color: #d32f2f;
+}
+
+.Edit-course{
+    margin-top: 30px;
+    
+}
+.Edit-course select{
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    padding: 5px 10px;
+    
+}
+#nocourses{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 5rem;
+}
+#nocourses button{
+    color: white;
+    padding: 5px 10px;
+    background-color: #2196F3;
+    border-radius: 3px;
+    border: none;
+    width: 15vw;
+    height: 7vh;
+    transition: background-color 0.3s ease;
+}
+#nocourses button:hover{
+    background-color: #d32f2f;
+}
+/* =============================AddPages======================= */
+#displayed-part{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.course-add-box,.student-add-box{
+    display: flex;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    max-width: 70vw;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    padding: 20px;
+   
+}
+.course-add-box >div,.student-add-box>div{
+    display: flex;
+    flex-direction: column;
+}
+.course-add-box label,.student-add-box label{
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 5px;}
+
+#add-course-btn,#add-student-btn{
+margin: 5px;
+padding: 0 40px;
+width: 16%;
+
+}
+.course-add-box input,.student-add-box input,#course-pointscale{
+    margin:0 5px 5px 5px;
+    padding: 5px 0;
+}

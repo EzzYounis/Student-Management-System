@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <script type="module" src="side-nav-bar.js" defer></script>
+    <title>Document</title>
+</head>
+<body>
+    <!-- <header><p>Welcome To</p><p>Student Management System</p></header> -->
+    <button class="menu-button"> <img src="images/more.png" alt=""></button>
+    <nav class="sidebar-hidden">
+        <div id="nav-top">
+            <img src="images\school.png" alt="" id="Dashboard-logo">Dashboard <a id="close-nav"><img src="images/right arrow.png" alt="" id="Dashboard-arrow"></a></div>
+        <ul id="Outter-list" >
+            <div class="Outter-options">
+                <li> <a href="" >Courses</a>
+                    <ul id="Inner-List">
+                        <li><a class="Inner-options" id="List-course-nav">Courses List</a> </li>
+                        <li> <a  class="Inner-options" id="Add-course-nav">Add New Course</a></li>
+                    </ul>
+                </li>
+            </div>
+            <div class="Outter-options">
+                <li><a href="" >Students</a>
+                    <ul id="Inner-List">
+                    <li><a class="Inner-options" id="List-student-nav">Student List</a> </li>
+                    <li> <a  class="Inner-options" id="Add-student-nav">Add New Student</a></li>
+                    </ul>
+                </li>
+            </div>
+            
+        </ul>
+    </nav>
+    <section id="displayed-part">
+    
+    </section>
+</body>
+</html>
