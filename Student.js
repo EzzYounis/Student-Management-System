@@ -1,3 +1,4 @@
+import { Course_Student } from "./Course-student.js";
 export class Student{
     constructor(id,name){
         this.id=id;
@@ -6,11 +7,26 @@ export class Student{
         this.CGPA=0;
     }
     calculateCGPA(){
-        if(this.courses.length=0){
-            this.CGPA=0
+        const numberofcourses=this.courses.length
+        let total=0;
+        if(numberofcourses){
+            this.courses.forEach(crs=>{
+                if(crs.grade=="A"){
+                    total+=4;
+                }else if (crs.grade=="B"){
+                    total+=3
+                }else if (crs.grade=="C"){
+                    total+=2
+                }else if (crs.grade=="D"){
+                    total+=1
+                }else if (crs.grade=="F"){
+                    total+=0
+                }
+            })
+            this.CGPA=total/numberofcourses;
         }
         else{
-            
+            this.CGPA=0;
         }
     }
 }
