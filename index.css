@@ -16,6 +16,24 @@ header{
     margin: auto 0;
 
 }
+#displayed-part{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#main-page{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fff;
+    width: 80vw;
+    font-size: 4vw;
+    padding: 20px 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+    border-radius: 20px;
+    border-color: gray;
+}
+
 .sidebar-opened{
     position: fixed;
     top: 0;
@@ -139,7 +157,7 @@ ul {
 .Course-box:hover ,.Student-box:hover {
     background-color: #f1f1f1;
 }
-.Edit-btn,.Delete-btn,.savebtn,#add-course-btn,#add-student-btn{
+.Edit-btn,.Delete-btn,.savebtn,#add-course-btn,#add-student-btn,#start-now{
     color: white;
     padding: 5px 10px;
     background-color: #2196F3;
@@ -152,7 +170,10 @@ ul {
     margin: 2px;
     
 }
-.Delete-btn:hover,.Edit-btn:hover,.savebtn:hover,#add-student-btn:hover,#add-course-btn:hover{
+#start-now{
+    width: 20vw;
+}
+.Delete-btn:hover,.Edit-btn:hover,.savebtn:hover,#add-student-btn:hover,#add-course-btn:hover,#start-now:hover{
     background-color: #d32f2f;
 }
 

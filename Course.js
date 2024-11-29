@@ -24,6 +24,16 @@ export class Course {
                 total+=(crsofstudent.mid*0.4+crsofstudent.final*0.6)
             })
             this.Average=total/numberofstudents
+        }else{
+            this.Average=0;
+        }
+    }
+    removestudent(stdid){
+        const index= this.Studentlist.findIndex(std=>std.id===stdid);
+        if(index!==-1){
+            this.Studentlist.splice(index,1)
+            this.numberofStudent=this.Studentlist.length;
+            this.calculateaverage();
         }
     }
 }

@@ -317,32 +317,90 @@ addcoursepage.addEventListener("click",(event)=>{
     
 })
 // =========================List Student============================
+function activateStdBtn(){
+    document.querySelectorAll(".Delete-btn").forEach(button => {
+        button.addEventListener("click" , deletestudent)
+    })
+    //.Edit-btn to .more-btn
+    document.querySelectorAll(".more-btn").forEach(button => {
+        button.addEventListener("click" , student_more)
+    })
+}
 const liststdpage=document.getElementById("List-student-nav");
 function createstudentbox(student){
     const studentbox = document.createElement("div")
         studentbox.classList.add("Student-box")
+        studentbox.setAttribute("data-stdid",`${student.id}`)
+        
         studentbox.innerHTML = `
-            <span>Course ID: ${student.id}</span>
+            <span>Student ID: ${student.id}</span>
             <span>Name: ${student.name}</span>
             <span>Average: ${student.CGPA}</span>
-            <button class="Delete-btn" data-stdid="${student.id}"> Delete</button></div>
+            <button class="Delete-btn" data-stdid="${student.id}"> Delete</button>
+            <button class="more-btn" data-stdid="${student.id}"> More</button></div>
     `;
     return studentbox;
 }
+function deletestudent(event){
+    const id= parseInt(event.target.getAttribute("data-stdid"))
+    const index = Students.findIndex(std=>std.id===id)
+    console.log(id)
+    console.log(Students[index])
+    Courses.forEach(Crs=>{
+        Crs.removestudent(id);
+        console.log(Crs)
+    })
 
-liststdpage.addEventListener("click",()=>{
+    Students.splice(index,1)
+    liststudent();
+
+
+}
+function student_more(event){
+    const id = parseInt(event.target.getAttribute("data-stdid"))
+    const studentbox=document.querySelector(`.Student-box[data-stdid="${id}"]`)
+    const morebox=document.createElement("div")
+    morebox.classList.add("std-more-box")
+    const student=Students.find(std=>std.id===id)
+    student.courses.forEach(crs=>
+        {
+            const stdCourse=document.createElement("div")
+            stdCourse.innerHTML=`
+            <span>Course ID: ${crs.id}</span>
+            <span>Mid Grade: ${crs.mid}</span>
+            <span>Final Grade: ${crs.final}</span>
+            <span>Note: ${crs.grade}</span>
+            `
+            morebox.appendChild(stdCourse)
+        })
+        studentbox.appendChild(morebox);
+
+}
+
+liststdpage.addEventListener("click",liststudent)
+    function liststudent(){
     const displayed = document.getElementById("displayed-part");
     displayed.innerHTML="";
     const studentlistbox=document.createElement("div");
     studentlistbox.classList.add("Student-list-box")
+    
+
     Students.forEach(student=>{
+        console.log(student)
         
     studentlistbox.appendChild(createstudentbox(student));
+    console.log(`data-stdid="${student.id}"`)
+    console.log(studentlistbox)
+    console.log(document.querySelector(`.Delete-btn[data-stdid="${student.id}"]`))
     
     })
     displayed.appendChild(studentlistbox);
+        activateStdBtn();
+        
+    }
     
-})
+
+
 // =============================Add new Student========================
 const addStdPage=document.getElementById("Add-student-nav");
 addStdPage.addEventListener("click",()=>{
@@ -381,7 +439,9 @@ addStdPage.addEventListener("click",()=>{
 })
 // ================Search Student===================
 const searchstd=document.getElementById("search-student-nav");
-searchstd.addEventListener("click",()=>{
+searchstd.addEventListener("click",searchstudent)
+
+    function searchstudent(){
     const displayed = document.getElementById("displayed-part");
     displayed.innerHTML="";
     const studentsearchbox=document.createElement("div");
@@ -394,9 +454,20 @@ searchstd.addEventListener("click",()=>{
     const searchbtn=document.getElementById("search-student-btn").addEventListener("click",()=>{
         const stdname=document.getElementById("student-name-search").value;
     const searchedstd=Students.find(std=>std.name===stdname)
-    studentsearchbox.appendChild(createstudentbox(searchedstd));
-
+    if(searchedstd ===undefined){
+        studentsearchbox.innerHTML = `
+    <p>Student not Found</p>
+    <button id="search-again"> Search For Another Student</button>
+    `;
+    document.getElementById("search-again").addEventListener("click",searchstudent)
+    }else{
+        studentsearchbox.innerHTML = `
+    <button id="search-student-btn">Search For Another Student</button>
+    `;
+    studentsearchbox.appendChild(createstudentbox(searchedstd));}
+    document.getElementById("search-student-btn").addEventListener("click",searchstudent)
+    activateStdBtn();
     })
     
 
-})
+}
