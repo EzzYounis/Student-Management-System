@@ -2,8 +2,8 @@ export class Course_Student {
     constructor(stdid ,courseid,mid,final,pointscale){
         this.stdid=stdid;
         this.Courseid=courseid;
-        this.mid=mid;
-        this.final=final;
+        this.mid=mid.toFixed(2);
+        this.final=final.toFixed(2);
         this.pointscale=pointscale;
         this.grade=this.calculategrade();
         

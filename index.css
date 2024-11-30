@@ -43,15 +43,26 @@ header{
     width: 25vw;
     border: 2px solid black;
     height: 100vh;
-    background-color:white;
+    background-color:#343a40;
+    color: #ffffff;
     margin: 1%;
+    box-shadow: 5px 0 10px rgba(0, 0, 0, 0.3);
+    
+    
 }
 .hidden{
     display: none;
 }
 .sidebar-hidden{
     
-    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 25vw;
+    height: 100vh;
+    background-color: white;
+    transform: translateX(-100%); /* Slide out to the left */
+    transition: transform 0.3s ease;
 }
 .menu-button img{
     width: 100%;
@@ -83,47 +94,51 @@ width: 40px;
 }
 ul {
     list-style-type: none;
+    
 }
+
+
 .Outter-options{
     color: black;
     font-weight: bold;
     font-size: 2rem;
     margin-right: 10%;
     padding: 5px;
+    
    
 }
 .Outter-options a {
     text-decoration: none;
-    color: black;
+    color: #f8f9faff;
+    cursor: pointer;
+    
+}
+.Outter-options a:hover {
+    background-color: #495057;
+    color: #007bff;
+    border-radius: 5px;
 }
 .Inner-options{
     color: black;
     text-decoration: none;
     font-size: 1rem;
 }
-.Outter-options:hover{
-    background-color: gray;
-    border-radius: 4px;
-}
-.Inner-options:hover{
-    color: white;
 
-}
 /* ==================Course List========================== */
 .Course-list{
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    width: 90vw;
 }
 .Course-list ul,.Student-list-box{
     display: flex;
     flex-direction: column;
     align-items: center;
     border: 1px solid #ddd;
-    width: 80vw;
-    
-    font-size: 2rem;
+    width: 100%;
+    font-size: 1.75vw;
     background-color: #f0f8ff;
     padding:15px;
     border-radius: 8px;
@@ -134,6 +149,7 @@ ul {
 
 .Course-box ,.Student-box{
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
     background-color: #f9f9f9;
@@ -144,36 +160,46 @@ ul {
     padding: 15px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.5);
 }
-.Course-box{
-    display: flex;
-    flex-direction: column;
-}
-.Course-box div{
+
+.Course-box div,.Student-box div{
     width: 100%;
 }
-.Course-box span{
+.Course-box span,.Student-box span{
+    display: block;
     margin: 0 5px;
+    width: 16.6%;
 }
+.Course-box-first,.std-list-first{
+    display: flex;
+    
+}
+
+
+
 .Course-box:hover ,.Student-box:hover {
     background-color: #f1f1f1;
 }
-.Edit-btn,.Delete-btn,.savebtn,#add-course-btn,#add-student-btn,#start-now{
+.Delete-btn,.more-btn,.savebtn,#add-course-btn,#add-student-btn,#start-now,.remove-student-fromcourse{
+    display: block;
     color: white;
-    padding: 5px 10px;
+    padding: 2px 10px;
     background-color: #2196F3;
     border-radius: 3px;
+    cursor: pointer;
     border: none;
-    width: 8%;
+    width: 10vw;
     height: 3vw;
     transition: background-color 0.3s ease;
     float: right;
-    margin: 2px;
+    margin: 0 2px;
     
 }
 #start-now{
     width: 20vw;
 }
-.Delete-btn:hover,.Edit-btn:hover,.savebtn:hover,#add-student-btn:hover,#add-course-btn:hover,#start-now:hover{
+.Delete-btn:hover,.more-btn:hover,.savebtn:hover,#add-student-btn:hover
+,#add-course-btn:hover,#start-now:hover,.remove-student-fromcourse:hover
+,.all-std-btn:hover,.Passed-std-btn:hover,.Failed-std-btn:hover,.add-student-course:hover{
     background-color: #d32f2f;
 }
 
@@ -189,6 +215,25 @@ ul {
     padding: 5px 10px;
     
 }
+.listedStd div ,.std-more-box div{
+    display: flex;
+    border: 1px solid #ddd;
+    margin: 5px;
+    border-radius: 5px;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+} 
+.all-std-btn,.Passed-std-btn,.Failed-std-btn,.add-student-course{
+    background-color:#2196F3 ;
+    padding: 5px 5px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.5vw;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
 #nocourses{
     display: flex;
     flex-direction: column;
@@ -221,7 +266,7 @@ ul {
     background-color: #f9f9f9;
     border: 1px solid #ccc;
     border-radius: 8px;
-    max-width: 70vw;
+    width: 70vw;
     box-shadow: 0 2px 5px rgba(0,0,0,0.5);
     padding: 20px;
    
@@ -229,9 +274,10 @@ ul {
 .course-add-box >div,.student-add-box>div{
     display: flex;
     flex-direction: column;
+    width: 25%;
 }
 .course-add-box label,.student-add-box label{
-    font-size: 2rem;
+    font-size: 2vw;
     font-weight: bold;
     margin-bottom: 5px;}
 
@@ -244,6 +290,7 @@ width: 16%;
 .course-add-box input,.student-add-box input,#course-pointscale{
     margin:0 5px 5px 5px;
     padding: 5px 0;
+    width: 10vw;
 }
 .toastbox{
     position: fixed;
@@ -252,4 +299,64 @@ width: 16%;
     padding: 5px;
     margin: 5px;
     background-color: #2196F3;
+}
+/* =================Search Student======= */
+
+.student-search-box {
+    display: flex; 
+    align-items: center; 
+    flex-direction: column;
+    justify-content: space-between; 
+    margin: 20px auto; 
+    width: 80vw;
+    
+    padding: 10px; 
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
+    background-color: #fff; 
+}
+
+
+#search-container {
+    display: flex;
+    flex-direction: column; 
+    margin-right: 10px; 
+    flex: 1; 
+}
+
+.student-search-box label {
+    font-size: 2vw;
+    margin-bottom: 5px; 
+    color: #333; 
+}
+
+.student-search-box input {
+    padding: 8px;
+    font-size: 2vw;
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+    width: 100%;
+    box-sizing: border-box; 
+}
+
+
+.student-search-box button{
+    padding: 8px 15px;
+    width: 20vw;
+    background-color: #007bff; 
+    color: #fff; 
+    border: none;
+    font-size: 1.5vw;
+    border-radius: 4px; 
+    
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+#search-again{
+    width: 40vw;
+}
+
+
+.student-search-box button:hover {
+    background-color: #d32f2f;
 }

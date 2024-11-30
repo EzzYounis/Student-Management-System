@@ -23,7 +23,7 @@ export class Course {
                 const crsofstudent= std.courses.find(crs=>crs.Courseid===this.id)
                 total+=(crsofstudent.mid*0.4+crsofstudent.final*0.6)
             })
-            this.Average=total/numberofstudents
+            this.Average=(total/numberofstudents).toFixed(2)
         }else{
             this.Average=0;
         }

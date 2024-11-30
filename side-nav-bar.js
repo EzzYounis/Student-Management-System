@@ -1,6 +1,7 @@
 import { Course } from "./Course.js"
 import { Student } from "./Student.js"
 import { Course_Student } from "./Course-student.js"
+document.getElementById("start-now").addEventListener("click",menuclick)
 const menubottun = document.querySelector(".menu-button")
 const sidebar = document.querySelector(".sidebar-hidden")
 function menuclick (){
@@ -26,10 +27,10 @@ Courses.push(new Course(34,"Adfsddddd",7))
 Courses.push(new Course(35,"Adfs",7))
 Courses.push(new Course(36,"Agg",7))
 let Students=[]
-Students.push(new Student(1000,"Ezzaldeen"));
-Students.push(new Student(1001,"mohammed"));
-Students.push(new Student(1002,"ali"));
-Students.push(new Student(1004,"ahmet"));
+Students.push(new Student(1000,"Ezzaldeen","Younis"));
+Students.push(new Student(1001,"mohammed","ali"));
+Students.push(new Student(1002,"ali","mahmud"));
+Students.push(new Student(1004,"ahmet","sobhi"));
 Students[0].courses.push(new Course_Student(1000 ,33,90,95,7))
 Students[0].courses.push(new Course_Student(1000 ,34,96,95,7))
 Students[1].courses.push(new Course_Student(1001 ,33,10,45,7))
@@ -60,7 +61,13 @@ function createToast(message){
     
     
 }
+function checkEmpty(){
+    if(Courses.length ===0){
+        
+    Coursesbox.innerHTML=`<div id="nocourses"><p >No Courses Yet </p>
+    <button> Add Course</button> </div>`
 
+    }}
 const listcoursepage=document.querySelector("#List-course-nav")
 listcoursepage.addEventListener("click",(event)=>{
     const displayed=document.querySelector("#displayed-part");
@@ -68,14 +75,15 @@ listcoursepage.addEventListener("click",(event)=>{
 
 
     const Coursesbox = document.querySelector(".Course-list")
-    function checkEmpty(){
+    
     if(Courses.length ===0){
         
     Coursesbox.innerHTML=`<div id="nocourses"><p >No Courses Yet </p>
     <button> Add Course</button> </div>`
 
-    }}
-    checkEmpty();
+    }
+
+   
     const Courselist = document.querySelector(".Course-list ul")
     Courses.forEach(course =>{
         const item=document.createElement("li")
@@ -95,16 +103,16 @@ listcoursepage.addEventListener("click",(event)=>{
         Courses.forEach(course =>{
             console.log(course)
             const item=document.createElement("li")
-            item.classList.add(`Course-box`)
-            item.setAttribute("data-id",course.id)
-            item.innerHTML=` <div class= "Course-box-first"><span> Course id:${course.id} </span>
-            <span> Name:${course.name} </span>
-            <span> Students:${course.numberofStudent} </span> 
-            <span> Average:${course.Average} </span>
-            <span> PointScale:${course.PointScale} </span>
-                <button class="more-btn" data-id="${course.id}"> More</button>
-                <button class="Delete-btn" data-id="${course.id}"> Delete</button></div>`
-            Courselist.appendChild(item)
+        item.classList.add("Course-box")
+        item.setAttribute("data-id",course.id)
+        item.innerHTML=` <div class= "Course-box-first"><span> Course id:${course.id} </span>
+        <span> Name:${course.name} </span>
+        <span> Students:${course.numberofStudent} </span> 
+        <span> Average:${course.Average} </span>
+        <span> PointScale:${course.PointScale} </span>
+            <button class="more-btn" data-id="${course.id}"> more</button>
+            <button class="Delete-btn" data-id="${course.id}"> Delete</button></div>`
+        Courselist.appendChild(item)
         })
         activatebtn();
         checkEmpty();
@@ -144,8 +152,8 @@ listcoursepage.addEventListener("click",(event)=>{
     const confirmbtn=document.querySelector(`#Confirm-btn[data-id="${id}"]`)
     confirmbtn.addEventListener("click",()=>{
         const stdid=parseInt(document.querySelector(`#Student-id[data-id="${id}"]`).value);
-        const midgrade=document.querySelector(`#mid-grade[data-id="${id}"]`).value;
-        const finalgrade=document.querySelector(`#final-grade[data-id="${id}"]`).value;
+        const midgrade=parseInt(document.querySelector(`#mid-grade[data-id="${id}"]`).value);
+        const finalgrade=parseInt(document.querySelector(`#final-grade[data-id="${id}"]`).value);
 
         const addedstudent=Students.find(std => std.id===stdid);
         console.log(stdid)
@@ -172,7 +180,7 @@ listcoursepage.addEventListener("click",(event)=>{
         const coursebox=document.querySelector(`.Course-box[data-id="${id}"]`)
         const editsection=document.createElement("div")
         //Edit-course to course-more
-        editsection.innerHTML=`<div class="Course-box-second">
+        editsection.innerHTML=`<div class="Course-box-second" data-id=${id}>
         <button class="all-std-btn" data-id = ${id}>All Student</button> 
         <button class="Passed-std-btn" data-id = ${id}>Passed Student</button>
         <button class="Failed-std-btn" data-id = ${id}>Failed Student</button>
@@ -189,6 +197,7 @@ listcoursepage.addEventListener("click",(event)=>{
         passedstdbtn.addEventListener("click",()=>liststd(event,id,"Passed"));
         failedstdbtn.addEventListener("click",()=>liststd(event,id,"Failed"));
         addstudentcourse.addEventListener("click",()=>addstdToCourse(event))
+        event.target.disabled=true;
     }
     function liststd(event,courseid,condition){
         const coursebox=document.querySelector(`.Course-box[data-id="${courseid}"]`)
@@ -211,13 +220,27 @@ listcoursepage.addEventListener("click",(event)=>{
 
             stdbox.innerHTML=`
             <span>Name: ${std.name}</span>
+            <span>Surname: ${std.surname}</span>
             <span>Mid Grade: ${crs.mid}</span>
             <span>Final Grade: ${crs.final}</span>
             <span>Note: ${crs.grade}</span>
+            <button class="remove-student-fromcourse" data-stdid="${std.id}">remove</button>
             `
             studentboxcontainer.appendChild(stdbox);
             })
             coursebox.append(studentboxcontainer)
+            const btns=document.querySelectorAll(".remove-student-fromcourse")
+            
+            btns.forEach(btn=>btn.addEventListener("click",(event)=>{
+                const id =event.target.getAttribute("data-stdid")
+                const std=Students.find(std=>std.id=id)
+                console.log(std)
+                std.removecourse(courseid)
+                course.removestudent(id)
+                console.log(course)
+                console.log(std)
+                reset();
+            }))
             
         }else if(condition==="Passed"){
             course.Studentlist.forEach(std=>{
@@ -226,6 +249,7 @@ listcoursepage.addEventListener("click",(event)=>{
                 const stdbox=document.createElement("div");
                 stdbox.classList.add("listedStd")
                 stdbox.innerHTML=`
+                <span>Surname: ${std.surname}</span>
                 <span>Name: ${std.name}</span>
             <span>Mid Grade: ${crs.mid}</span>
             <span>Final Grade: ${crs.final}</span>
@@ -243,6 +267,7 @@ listcoursepage.addEventListener("click",(event)=>{
                 stdbox.classList.add("listedStd")
                 stdbox.innerHTML=`
                 <span>Name: ${std.name}</span>
+                <span>Surname: ${std.surname}</span>
             <span>Mid Grade: ${crs.mid}</span>
             <span>Final Grade: ${crs.final}</span>
             <span>Note: ${crs.grade}</span>
@@ -252,6 +277,7 @@ listcoursepage.addEventListener("click",(event)=>{
                 coursebox.append(studentboxcontainer)
             })
         }
+
     }
     
     
@@ -330,15 +356,19 @@ const liststdpage=document.getElementById("List-student-nav");
 function createstudentbox(student){
     const studentbox = document.createElement("div")
         studentbox.classList.add("Student-box")
+        const std_first=document.createElement("div");
+        std_first.classList.add("std-list-first")
         studentbox.setAttribute("data-stdid",`${student.id}`)
         
-        studentbox.innerHTML = `
+        std_first.innerHTML = `
             <span>Student ID: ${student.id}</span>
             <span>Name: ${student.name}</span>
+            <span>Surname: ${student.surname}</span>
             <span>Average: ${student.CGPA}</span>
             <button class="Delete-btn" data-stdid="${student.id}"> Delete</button>
             <button class="more-btn" data-stdid="${student.id}"> More</button></div>
     `;
+    studentbox.appendChild(std_first)
     return studentbox;
 }
 function deletestudent(event){
@@ -366,7 +396,7 @@ function student_more(event){
         {
             const stdCourse=document.createElement("div")
             stdCourse.innerHTML=`
-            <span>Course ID: ${crs.id}</span>
+            <span>Course ID: ${crs.Courseid}</span>
             <span>Mid Grade: ${crs.mid}</span>
             <span>Final Grade: ${crs.final}</span>
             <span>Note: ${crs.grade}</span>
@@ -374,7 +404,7 @@ function student_more(event){
             morebox.appendChild(stdCourse)
         })
         studentbox.appendChild(morebox);
-
+        event.target.disabled=true;
 }
 
 liststdpage.addEventListener("click",liststudent)
@@ -383,17 +413,22 @@ liststdpage.addEventListener("click",liststudent)
     displayed.innerHTML="";
     const studentlistbox=document.createElement("div");
     studentlistbox.classList.add("Student-list-box")
-    
+    if(Students.length ===0){
+        
+        studentlistbox.innerHTML=`<div id="studentcourses"><p >No Courses Yet </p>
+        <button id="addpagebtn"> Add Course</button> </div>`
+        displayed.appendChild(studentlistbox);
+        document.getElementById("addpagebtn").addEventListener("click",load_add_student_page)
+        return;
+        }
 
     Students.forEach(student=>{
         console.log(student)
         
     studentlistbox.appendChild(createstudentbox(student));
-    console.log(`data-stdid="${student.id}"`)
-    console.log(studentlistbox)
-    console.log(document.querySelector(`.Delete-btn[data-stdid="${student.id}"]`))
-    
+    console.log(Students.length)
     })
+   
     displayed.appendChild(studentlistbox);
         activateStdBtn();
         
@@ -403,7 +438,8 @@ liststdpage.addEventListener("click",liststudent)
 
 // =============================Add new Student========================
 const addStdPage=document.getElementById("Add-student-nav");
-addStdPage.addEventListener("click",()=>{
+addStdPage.addEventListener("click",load_add_student_page)
+    function load_add_student_page(){
     const displayed = document.getElementById("displayed-part");
     displayed.innerHTML="";
     const studentaddbox=document.createElement("div");
@@ -411,17 +447,20 @@ addStdPage.addEventListener("click",()=>{
         studentaddbox.innerHTML = `
             <div><label for="student-id">ID:</label> <input type="text" id="student-id" placeholder="Enter student ID"></div>
     <div><label for="student-name">Name</label> <input type="text" id="student-name" placeholder="Enter student Name"></div>
+    <div><label for="student-surname">Surname</label> <input type="text" id="student-surname" placeholder="Enter student Surname"></div>
     <button id="add-student-btn">Add</button>
     `;
+    
     displayed.appendChild(studentaddbox);
     const addbtn=document.getElementById("add-student-btn");
     addbtn.addEventListener("click" ,()=>{
         console.log("event started")
         const newname=document.getElementById("student-name").value;
+        const newsurname=document.getElementById("student-surname").value;
         const newid=parseInt(document.getElementById("student-id").value);
         
         console.log(Students.find(std=>std.id===newid))
-    if(newname===""||newid===""){
+    if(newname===""||newid===""||newsurname===""){
         createToast("Please Fill all the boxes")
         return;
         console.log("did leave")
@@ -430,13 +469,13 @@ addStdPage.addEventListener("click",()=>{
         return;
         console.log("did leavee2")
     }else{
-        Students.push(new Student(newid,newname))
+        Students.push(new Student(newid,newname,newsurname))
         
         
     }
     })
     
-})
+}
 // ================Search Student===================
 const searchstd=document.getElementById("search-student-nav");
 searchstd.addEventListener("click",searchstudent)
@@ -447,7 +486,7 @@ searchstd.addEventListener("click",searchstudent)
     const studentsearchbox=document.createElement("div");
     studentsearchbox.classList.add("student-search-box")
         studentsearchbox.innerHTML = `
-    <div><label for="student-name-search">Name</label> <input type="text" id="student-name-search" placeholder="Enter student Name"></div>
+    <div id="search-container"><label for="student-name-search">Name</label> <input type="text" id="student-name-search" placeholder="Enter student Name"></div>
     <button id="search-student-btn">Search</button>
     `;
     displayed.appendChild(studentsearchbox);

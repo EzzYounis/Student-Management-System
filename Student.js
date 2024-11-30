@@ -1,8 +1,9 @@
 import { Course_Student } from "./Course-student.js";
 export class Student{
-    constructor(id,name){
+    constructor(id,name,surname){
         this.id=id;
         this.name=name;
+        this.surname=surname;
         this.courses=[];
         this.CGPA=0;
     }
@@ -28,5 +29,9 @@ export class Student{
         else{
             this.CGPA=0;
         }
+    }
+    removecourse(id){
+       const index= this.courses.findIndex(crs=>crs.Courseid===id)
+       this.courses.splice(index,1)
     }
 }
