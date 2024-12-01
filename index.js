@@ -51,7 +51,7 @@ Courses[1].calculateaverage();
 function createToast(message){
     const toast = document.createElement("div");
     document.body.appendChild(toast);
-    console.log(toast.parentElement)
+    
     toast.classList.add("toastbox")
     toast.innerHTML=`
     <p>
@@ -104,7 +104,7 @@ listcoursepage.addEventListener("click",(event)=>{
     function reset(){
         Courselist.innerHTML=""
         Courses.forEach(course =>{
-            console.log(course)
+            
             const item=document.createElement("li")
         item.classList.add("Course-box")
         item.setAttribute("data-id",course.id)
@@ -162,8 +162,6 @@ listcoursepage.addEventListener("click",(event)=>{
         let finalgrade=parseInt(document.querySelector(`#final-grade[data-id="${id}"]`).value.trim());
 
         const addedstudent=Students.find(std => std.id===stdid);
-        console.log(midgrade)
-        console.log(0<=midgrade<=100)
         if(addedstudent===undefined){
             createToast("Student Does not exist")
             document.querySelector(`#Student-id[data-id="${id}"]`).value="";
@@ -237,8 +235,7 @@ listcoursepage.addEventListener("click",(event)=>{
             
             course.Studentlist.forEach(std=>{
                 const crs=std.courses.find(crs=>crs.Courseid===courseid)
-                console.log(crs)
-                console.log(Students)
+                
             
             const stdbox=document.createElement("div");
             
@@ -259,12 +256,10 @@ listcoursepage.addEventListener("click",(event)=>{
             btns.forEach(btn=>btn.addEventListener("click",(event)=>{
                 const id =parseInt(event.target.getAttribute("data-stdid"));
                 const std=Students.find(std=>std.id===id)
-                console.log(std)
-                console.log(std)
+                
                 std.removecourse(courseid)
                 course.removestudent(id)
-                console.log(course)
-                console.log(std)
+                
                 reset();
             }))
             
@@ -348,15 +343,15 @@ addcoursepage.addEventListener("click",(event)=>{
     
     const addbtn=document.getElementById("add-course-btn")
     addbtn.addEventListener("click" ,()=>{
-        console.log("event started")
+        
         const newname=document.getElementById("course-name").value;
         const newid=parseInt(document.getElementById("course-id").value);
         const newpointScale=parseInt(document.getElementById("course-pointscale").value)
-        console.log(Courses.find(crs=>crs.id===newid))
+        
     if(newname===""||newid===""){
         createToast("Please Fill all the boxes")
         return;
-        console.log("did leave")
+        
     }else if(Courses.find(crs=>crs.id===newid)!==undefined){
         createToast("The Course alredy exists")
         
@@ -418,8 +413,7 @@ function student_more(event){
     const morebox=document.createElement("div")
     morebox.classList.add("std-more-box")
     const student=Students.find(std=>std.id===id)
-    console.log(Students)
-    console.log(student)
+    
     student.courses.forEach(crs=>
         {
             const stdCourse=document.createElement("div")
@@ -481,12 +475,12 @@ addStdPage.addEventListener("click",load_add_student_page)
     displayed.appendChild(studentaddbox);
     const addbtn=document.getElementById("add-student-btn");
     addbtn.addEventListener("click" ,()=>{
-        console.log("event started")
+        
         const newname=document.getElementById("student-name").value;
         const newsurname=document.getElementById("student-surname").value;
         const newid=parseInt(document.getElementById("student-id").value);
         
-        console.log(Students.find(std=>std.id===newid))
+        
     if(newname===""||newid===""||newsurname===""){
         createToast("Please Fill all the boxes")
         
@@ -521,8 +515,8 @@ searchstd.addEventListener("click",searchstudent)
     displayed.appendChild(studentsearchbox);
     const searchbtn=document.getElementById("search-student-btn").addEventListener("click",()=>{
         const stdname=document.getElementById("student-name-search").value;
-    const searchedstd=Students.find(std=>std.fullname===stdname)
-    console.log(searchedstd.fullname.toLowerCase())
+    const searchedstd=Students.find(std=>std.fullname.toLowerCase()===stdname.toLowerCase())
+    
     if(searchedstd ===undefined){
         studentsearchbox.innerHTML = `
     <p>Student not Found</p>
