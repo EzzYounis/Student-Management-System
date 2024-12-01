@@ -164,12 +164,18 @@ listcoursepage.addEventListener("click",(event)=>{
         const addedstudent=Students.find(std => std.id===stdid);
         console.log(midgrade)
         console.log(0<=midgrade<=100)
-        if(course.Studentlist.find(std=>std.id===addedstudent.id)!==undefined){
+        if(addedstudent===undefined){
+            createToast("Student Does not exist")
+            document.querySelector(`#Student-id[data-id="${id}"]`).value="";
+            document.querySelector(`#mid-grade[data-id="${id}"]`).value="";
+            document.querySelector(`#final-grade[data-id="${id}"]`).value="";
+            return;
+        }else if(course.Studentlist.find(std=>std.id===addedstudent.id)!==undefined){
             createToast("Student already exists")
             document.querySelector(`#Student-id[data-id="${id}"]`).value="";
             document.querySelector(`#mid-grade[data-id="${id}"]`).value="";
             document.querySelector(`#final-grade[data-id="${id}"]`).value=""
-        }else if(addedstudent!==undefined && 0<=midgrade && midgrade<=100 && 0<=finalgrade &&midgrade<=100 ){
+        }else if(0<=midgrade && midgrade<=100 && 0<=finalgrade &&midgrade<=100 ){
             addedstudent.courses.push(new Course_Student(stdid,id,midgrade,finalgrade,course.PointScale))
             createToast("Student Added to the Course")
             course.addStudent(addedstudent)
@@ -516,6 +522,7 @@ searchstd.addEventListener("click",searchstudent)
     const searchbtn=document.getElementById("search-student-btn").addEventListener("click",()=>{
         const stdname=document.getElementById("student-name-search").value;
     const searchedstd=Students.find(std=>std.fullname===stdname)
+    console.log(searchedstd.fullname.toLowerCase())
     if(searchedstd ===undefined){
         studentsearchbox.innerHTML = `
     <p>Student not Found</p>

@@ -11,7 +11,7 @@ export class Student{
     calculateCGPA(){
         const numberofcourses=this.courses.length
         let total=0;
-        if(numberofcourses){
+        if(numberofcourses!==0){
             this.courses.forEach(crs=>{
                 if(crs.grade=="A"){
                     total+=4;
@@ -34,6 +34,7 @@ export class Student{
     removecourse(id){
        const index= this.courses.findIndex(crs=>crs.Courseid===id)
        this.courses.splice(index,1)
+        this.calculateCGPA();
     }
     
 }
