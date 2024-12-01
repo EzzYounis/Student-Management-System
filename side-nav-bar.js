@@ -12,30 +12,30 @@ function menuclick (){
 
 }
 const closearrow= document.querySelector("#close-nav")
-closearrow.addEventListener("click",(event)=>{
+closearrow.addEventListener("click",close_nav)
+    function close_nav(){
     sidebar.classList.add("sidebar-hidden")
     sidebar.classList.remove("sidebar-opened")
     menubottun.classList.add("menu-button")
     menubottun.classList.remove("hidden")
-})
+}
 menubottun.addEventListener("click",menuclick)
 // ========================Course List==================================
-
+//This is an initial data for the page
 let Courses=[];
-Courses.push(new Course(33,"Ai",7))
-Courses.push(new Course(34,"Adfsddddd",7))
-Courses.push(new Course(35,"Adfs",7))
-Courses.push(new Course(36,"Agg",7))
+Courses.push(new Course(33,"Web Development",7))
+Courses.push(new Course(34,"Artificial Inteligence",7))
+Courses.push(new Course(35,"Database management",7))
+Courses.push(new Course(36,"Mobile Development",7))
 let Students=[]
 Students.push(new Student(1000,"Ezzaldeen","Younis"));
 Students.push(new Student(1001,"mohammed","ali"));
-Students.push(new Student(1002,"ali","mahmud"));
-Students.push(new Student(1004,"ahmet","sobhi"));
+Students.push(new Student(1002,"emre","yilmaz"));
+Students.push(new Student(1004,"ali","khalid"));
 Students[0].courses.push(new Course_Student(1000 ,33,90,95,7))
 Students[0].courses.push(new Course_Student(1000 ,34,96,95,7))
 Students[1].courses.push(new Course_Student(1001 ,33,10,45,7))
 Students[2].courses.push(new Course_Student(1002 ,33,40,95,7))
-
 Courses[0].addStudent(Students[0])
 Courses[0].addStudent(Students[1])
 Courses[0].addStudent(Students[2])
@@ -45,9 +45,9 @@ Students[1].calculateCGPA();
 Students[2].calculateCGPA();
 Courses[0].calculateaverage();
 Courses[1].calculateaverage();
+// =======================================================================
 
-
-
+// Creates a notification
 function createToast(message){
     const toast = document.createElement("div");
     document.body.appendChild(toast);
@@ -58,9 +58,11 @@ function createToast(message){
     ${message}
     </p>
     `
-    
-    
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
 }
+// function to check if the course list is empty
 function checkEmpty(){
     if(Courses.length ===0){
         
@@ -68,8 +70,10 @@ function checkEmpty(){
     <button> Add Course</button> </div>`
 
     }}
+//  Coures list page    
 const listcoursepage=document.querySelector("#List-course-nav")
 listcoursepage.addEventListener("click",(event)=>{
+    close_nav()
     const displayed=document.querySelector("#displayed-part");
     displayed.innerHTML=`<div class="Course-list"> <ul></ul></div>`; 
 
@@ -82,8 +86,6 @@ listcoursepage.addEventListener("click",(event)=>{
     <button> Add Course</button> </div>`
 
     }
-
-   
     const Courselist = document.querySelector(".Course-list ul")
     Courses.forEach(course =>{
         const item=document.createElement("li")
@@ -98,6 +100,7 @@ listcoursepage.addEventListener("click",(event)=>{
             <button class="Delete-btn" data-id="${course.id}"> Delete</button></div>`
         Courselist.appendChild(item)
     })
+    // function to rebulid the page to make updates
     function reset(){
         Courselist.innerHTML=""
         Courses.forEach(course =>{
@@ -122,7 +125,9 @@ listcoursepage.addEventListener("click",(event)=>{
 
     function deletecourse(event){
         const id = parseInt(event.target.getAttribute("data-id"))
+        
         const index = Courses.findIndex(course => course.id===id)
+        const course=Courses[index].Studentlist.forEach(std=>std.removecourse(id)) //removes the course from the students
         Courses.splice(index,1)
         event.target.parentElement.parentElement.remove();
         checkEmpty();
@@ -130,7 +135,7 @@ listcoursepage.addEventListener("click",(event)=>{
 
 
 
-
+// add student to the course implementation
     function addstdToCourse(event){
         const id = parseInt(event.target.getAttribute("data-id"))
         const course =Courses.find(crs=>crs.id===id);
@@ -150,27 +155,39 @@ listcoursepage.addEventListener("click",(event)=>{
     `;
     coursebox.appendChild(addstdToCrsbox);
     const confirmbtn=document.querySelector(`#Confirm-btn[data-id="${id}"]`)
-    confirmbtn.addEventListener("click",()=>{
-        const stdid=parseInt(document.querySelector(`#Student-id[data-id="${id}"]`).value);
-        const midgrade=parseInt(document.querySelector(`#mid-grade[data-id="${id}"]`).value);
-        const finalgrade=parseInt(document.querySelector(`#final-grade[data-id="${id}"]`).value);
+    confirmbtn.addEventListener("click",confirm)
+        function confirm(){
+        let stdid=parseInt(document.querySelector(`#Student-id[data-id="${id}"]`).value.trim());
+        let midgrade=parseInt(document.querySelector(`#mid-grade[data-id="${id}"]`).value.trim());
+        let finalgrade=parseInt(document.querySelector(`#final-grade[data-id="${id}"]`).value.trim());
 
         const addedstudent=Students.find(std => std.id===stdid);
-        console.log(stdid)
-        console.log(addedstudent)
-        if(addedstudent!==undefined && 0<=midgrade<=100 && 0<=finalgrade<=100 ){
+        console.log(midgrade)
+        console.log(0<=midgrade<=100)
+        if(course.Studentlist.find(std=>std.id===addedstudent.id)!==undefined){
+            createToast("Student already exists")
+            document.querySelector(`#Student-id[data-id="${id}"]`).value="";
+            document.querySelector(`#mid-grade[data-id="${id}"]`).value="";
+            document.querySelector(`#final-grade[data-id="${id}"]`).value=""
+        }else if(addedstudent!==undefined && 0<=midgrade && midgrade<=100 && 0<=finalgrade &&midgrade<=100 ){
             addedstudent.courses.push(new Course_Student(stdid,id,midgrade,finalgrade,course.PointScale))
+            createToast("Student Added to the Course")
             course.addStudent(addedstudent)
             addedstudent.calculateCGPA();
             course.calculateaverage();
-            console.log(addedstudent)
-        }else{
-            console.log("adding Failed")
-            return addstdToCourse(event);
+            reset();
         }
-        reset();
+        else{
+            
+            createToast("Unacceptable Values")
+            document.querySelector(`#Student-id[data-id="${id}"]`).value="";
+            document.querySelector(`#mid-grade[data-id="${id}"]`).value="";
+            document.querySelector(`#final-grade[data-id="${id}"]`).value=""
+            
+        }
         
-    })
+        
+    }
 
     }
     
@@ -179,7 +196,6 @@ listcoursepage.addEventListener("click",(event)=>{
         const id = parseInt(event.target.getAttribute("data-id"))
         const coursebox=document.querySelector(`.Course-box[data-id="${id}"]`)
         const editsection=document.createElement("div")
-        //Edit-course to course-more
         editsection.innerHTML=`<div class="Course-box-second" data-id=${id}>
         <button class="all-std-btn" data-id = ${id}>All Student</button> 
         <button class="Passed-std-btn" data-id = ${id}>Passed Student</button>
@@ -187,7 +203,6 @@ listcoursepage.addEventListener("click",(event)=>{
         <button class="add-student-course" data-id="${id}">add student to the course</button>
         </div>
         `
-
         coursebox.appendChild(editsection)
         const allstdbtn=document.querySelector(`.all-std-btn[data-id="${id}"]`)
         const passedstdbtn=document.querySelector(`.Passed-std-btn[data-id="${id}"]`)
@@ -199,6 +214,9 @@ listcoursepage.addEventListener("click",(event)=>{
         addstudentcourse.addEventListener("click",()=>addstdToCourse(event))
         event.target.disabled=true;
     }
+
+
+// ====this function to list student after clicking more for the course===
     function liststd(event,courseid,condition){
         const coursebox=document.querySelector(`.Course-box[data-id="${courseid}"]`)
         const course = Courses.find(coursee=>coursee.id===courseid)
@@ -214,6 +232,7 @@ listcoursepage.addEventListener("click",(event)=>{
             course.Studentlist.forEach(std=>{
                 const crs=std.courses.find(crs=>crs.Courseid===courseid)
                 console.log(crs)
+                console.log(Students)
             
             const stdbox=document.createElement("div");
             
@@ -232,8 +251,9 @@ listcoursepage.addEventListener("click",(event)=>{
             const btns=document.querySelectorAll(".remove-student-fromcourse")
             
             btns.forEach(btn=>btn.addEventListener("click",(event)=>{
-                const id =event.target.getAttribute("data-stdid")
-                const std=Students.find(std=>std.id=id)
+                const id =parseInt(event.target.getAttribute("data-stdid"));
+                const std=Students.find(std=>std.id===id)
+                console.log(std)
                 console.log(std)
                 std.removecourse(courseid)
                 course.removestudent(id)
@@ -249,8 +269,8 @@ listcoursepage.addEventListener("click",(event)=>{
                 const stdbox=document.createElement("div");
                 stdbox.classList.add("listedStd")
                 stdbox.innerHTML=`
-                <span>Surname: ${std.surname}</span>
                 <span>Name: ${std.name}</span>
+                <span>Surname: ${std.surname}</span>
             <span>Mid Grade: ${crs.mid}</span>
             <span>Final Grade: ${crs.final}</span>
             <span>Note: ${crs.grade}</span>
@@ -279,7 +299,7 @@ listcoursepage.addEventListener("click",(event)=>{
         }
 
     }
-    
+
     
     function activatebtn(){
         document.querySelectorAll(".Delete-btn").forEach(button => {
@@ -300,6 +320,7 @@ function CheckCouresExists(courseId){
 }
 const addcoursepage=document.querySelector("#Add-course-nav")
 addcoursepage.addEventListener("click",(event)=>{
+    close_nav()
     const displayed=document.querySelector("#displayed-part");
     displayed.innerHTML=""; 
     const courseaddbox=document.createElement("div")
@@ -332,11 +353,11 @@ addcoursepage.addEventListener("click",(event)=>{
         console.log("did leave")
     }else if(Courses.find(crs=>crs.id===newid)!==undefined){
         createToast("The Course alredy exists")
-        return;
-        console.log("did leavee2")
+        
     }else{
+        createToast("Course Added Successfully")
         Courses.push(new Course(newid,newname,newpointScale))
-        console.log(Courses)
+
         
     }
     })
@@ -354,6 +375,7 @@ function activateStdBtn(){
 }
 const liststdpage=document.getElementById("List-student-nav");
 function createstudentbox(student){
+    
     const studentbox = document.createElement("div")
         studentbox.classList.add("Student-box")
         const std_first=document.createElement("div");
@@ -364,7 +386,7 @@ function createstudentbox(student){
             <span>Student ID: ${student.id}</span>
             <span>Name: ${student.name}</span>
             <span>Surname: ${student.surname}</span>
-            <span>Average: ${student.CGPA}</span>
+            <span>CGPA: ${student.CGPA}</span>
             <button class="Delete-btn" data-stdid="${student.id}"> Delete</button>
             <button class="more-btn" data-stdid="${student.id}"> More</button></div>
     `;
@@ -374,11 +396,9 @@ function createstudentbox(student){
 function deletestudent(event){
     const id= parseInt(event.target.getAttribute("data-stdid"))
     const index = Students.findIndex(std=>std.id===id)
-    console.log(id)
-    console.log(Students[index])
     Courses.forEach(Crs=>{
         Crs.removestudent(id);
-        console.log(Crs)
+        
     })
 
     Students.splice(index,1)
@@ -392,6 +412,8 @@ function student_more(event){
     const morebox=document.createElement("div")
     morebox.classList.add("std-more-box")
     const student=Students.find(std=>std.id===id)
+    console.log(Students)
+    console.log(student)
     student.courses.forEach(crs=>
         {
             const stdCourse=document.createElement("div")
@@ -409,6 +431,7 @@ function student_more(event){
 
 liststdpage.addEventListener("click",liststudent)
     function liststudent(){
+        close_nav()
     const displayed = document.getElementById("displayed-part");
     displayed.innerHTML="";
     const studentlistbox=document.createElement("div");
@@ -423,10 +446,7 @@ liststdpage.addEventListener("click",liststudent)
         }
 
     Students.forEach(student=>{
-        console.log(student)
-        
     studentlistbox.appendChild(createstudentbox(student));
-    console.log(Students.length)
     })
    
     displayed.appendChild(studentlistbox);
@@ -440,6 +460,7 @@ liststdpage.addEventListener("click",liststudent)
 const addStdPage=document.getElementById("Add-student-nav");
 addStdPage.addEventListener("click",load_add_student_page)
     function load_add_student_page(){
+        close_nav()
     const displayed = document.getElementById("displayed-part");
     displayed.innerHTML="";
     const studentaddbox=document.createElement("div");
@@ -462,16 +483,18 @@ addStdPage.addEventListener("click",load_add_student_page)
         console.log(Students.find(std=>std.id===newid))
     if(newname===""||newid===""||newsurname===""){
         createToast("Please Fill all the boxes")
-        return;
-        console.log("did leave")
+        
+        
     }else if(Students.find(std=>std.id===newid)!==undefined){
-        createToast("The Course alredy exists")
-        return;
-        console.log("did leavee2")
+        createToast("The Student already exists")
+        
+        
     }else{
         Students.push(new Student(newid,newname,newsurname))
-        
-        
+        createToast("The Student added Successfully")
+        document.getElementById("student-name").value="";
+        document.getElementById("student-surname").value="";
+        document.getElementById("student-id").value="";
     }
     })
     
@@ -492,7 +515,7 @@ searchstd.addEventListener("click",searchstudent)
     displayed.appendChild(studentsearchbox);
     const searchbtn=document.getElementById("search-student-btn").addEventListener("click",()=>{
         const stdname=document.getElementById("student-name-search").value;
-    const searchedstd=Students.find(std=>std.name===stdname)
+    const searchedstd=Students.find(std=>std.fullname===stdname)
     if(searchedstd ===undefined){
         studentsearchbox.innerHTML = `
     <p>Student not Found</p>

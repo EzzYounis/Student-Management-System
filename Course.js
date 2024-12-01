@@ -28,6 +28,7 @@ export class Course {
             this.Average=0;
         }
     }
+    
     removestudent(stdid){
         const index= this.Studentlist.findIndex(std=>std.id===stdid);
         if(index!==-1){

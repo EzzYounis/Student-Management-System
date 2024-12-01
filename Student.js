@@ -6,6 +6,7 @@ export class Student{
         this.surname=surname;
         this.courses=[];
         this.CGPA=0;
+        this.fullname=name+" "+surname
     }
     calculateCGPA(){
         const numberofcourses=this.courses.length
@@ -34,4 +35,5 @@ export class Student{
        const index= this.courses.findIndex(crs=>crs.Courseid===id)
        this.courses.splice(index,1)
     }
+    
 }
